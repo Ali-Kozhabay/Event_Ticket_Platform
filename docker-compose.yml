@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/event_ticket_db
+      - SECRET_KEY=your-secret-key-change-in-production
+      - ENVIRONMENT=development
+      - DEBUG=True
+    volumes:
+      - .:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=event_ticket_db
+    ports:
+      - "5432:5432"
+
+  # Uncomment to add Redis and Celery for background tasks
+  # redis:
+  #   image: redis:7
+  #   ports:
+  #     - "6379:6379"
+  
+  # celery_worker:
+  #   build: .
+  #   command: celery -A app.tasks worker --loglevel=info
+  #   volumes:
+  #     - .:/app
+  #   depends_on:
+  #     - db
+  #     - redis
+  #   environment:
+  #     - DATABASE_URL=postgresql://postgres:password@db:5432/event_ticket_db
+  #     - REDIS_HOST=redis
+  #     - REDIS_PORT=6379
+
+volumes:
+  postgres_data:
+

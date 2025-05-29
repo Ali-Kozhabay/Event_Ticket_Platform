@@ -30,7 +30,7 @@ A FastAPI-based platform for event ticket management with features for event cre
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/event_ticket_platform.git
+   git clone https://github.com/Ali-Kozhabay/Event_Ticket_Platform.git
    cd event_ticket_platform
    ```
 
